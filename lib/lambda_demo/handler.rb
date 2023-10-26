@@ -16,7 +16,7 @@ module LambdaDemo
 
     def call
       @logger.info "Running process..."
-      @logger.info @event[:message]
+      @logger.info @event['message']
       @logger.info "Done..."
     end
   end
