@@ -11,13 +11,12 @@ module LambdaDemo
 
     def initialize(event:)
       @event = event
-      @logger = Logger.new($stdout)
     end
 
     def call
-      @logger.info "Running process..."
-      @logger.info @event["message"]
-      @logger.info "Done..."
+      LambdaDemo.logger.info "Running process..."
+      LambdaDemo.logger.info @event["message"]
+      LambdaDemo.logger.info "Done..."
     end
   end
 end

@@ -4,13 +4,15 @@ require "bundler"
 require "zeitwerk"
 
 module LambdaDemo
-  VERSION = "1.0"
+  VERSION = "1.1"
 
-  def self.setup_zeitwerk
-    loader = Zeitwerk::Loader.new
-    loader.tag = "lambda-demo"
-    loader.push_dir(__dir__)
-    loader.setup
+  def self.loader
+    @loader ||= begin
+      loader = Zeitwerk::Loader.new
+      loader.tag = "lambda-demo"
+      loader.push_dir(__dir__)
+      loader
+    end
   end
 
   def self.setup_dependencies
@@ -19,7 +21,18 @@ module LambdaDemo
 
     Bundler.require(*stages)
   end
+
+  def self.logger
+    @logger ||= Logger.new($stdout)
+  end
+
+  def self.boot
+    return if @booted
+
+    loader.setup
+    setup_dependencies
+    @booted = true
+  end
 end
 
-LambdaDemo.setup_zeitwerk
-LambdaDemo.setup_dependencies
+LambdaDemo.boot
